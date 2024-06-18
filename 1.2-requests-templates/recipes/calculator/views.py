@@ -16,6 +16,13 @@ DATA = {
         'сыр, ломтик': 1,
         'помидор, ломтик': 1,
     },
+    'pizza': {
+        'тесто, основа': 1,
+        'ветчина, г': 200,
+        'сыр, г': 200,
+        'помидор, ломтик': 3,
+        'грибы, шт': 3,
+    },
     # можете добавить свои рецепты ;)
 }
 
@@ -28,3 +35,13 @@ DATA = {
 #     'ингредиент2': количество2,
 #   }
 # }
+def recipe(request, recipe):
+    servings = request.GET.get('servings')
+    if servings and servings.isnumeric():
+        count = int(servings)
+    else:
+        count = 1
+    pic_recipe = DATA[recipe]
+    x_count = {key: val * count for key, val in pic_recipe.items()}
+    context = {'recipe': x_count}
+    return render(request, 'calculator/index.html', context)
